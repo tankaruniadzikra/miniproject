@@ -45,8 +45,8 @@ func main() {
 	e.DELETE("/equipments/rent/:id", handler.DeleteRentalHistory, handler.RequireAuth)
 	e.GET("/equipments/rent", handler.GetAllRentalHistories, handler.RequireAuth)
 
-	// e.POST("/users/topup_deposit", handler.TopupDeposit, handler.RequireAuth)
-	// e.POST("/payments", handler.MakePayment, handler.RequireAuth)
+	e.POST("/users/topup_deposit", handler.TopupDeposit, handler.RequireAuth)
+	e.POST("/payments", handler.MakePayment, handler.RequireAuth)
 
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
 
