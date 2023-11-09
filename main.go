@@ -41,9 +41,9 @@ func main() {
 
 	e.GET("/equipments", handler.GetAllEquipments)
 
-	// e.POST("/equipments/rent", handler.RentEquipment, handler.RequireAuth)
-	// e.DELETE("/equipments/rent/:id", handler.DeleteRentalHistory, handler.RequireAuth)
-	// e.GET("/equipments/rent", handler.GetAllRentalHistories, handler.RequireAuth)
+	e.POST("/equipments/rent", handler.RentEquipment, handler.RequireAuth)
+	e.DELETE("/equipments/rent/:id", handler.DeleteRentalHistory, handler.RequireAuth)
+	e.GET("/equipments/rent", handler.GetAllRentalHistories, handler.RequireAuth)
 
 	// e.POST("/users/topup_deposit", handler.TopupDeposit, handler.RequireAuth)
 	// e.POST("/payments", handler.MakePayment, handler.RequireAuth)
