@@ -1,0 +1,211 @@
+definitions:
+  entity.RentalHistory:
+    properties:
+      equipment_id:
+        type: integer
+      id:
+        type: integer
+      rental_date:
+        type: string
+      return_date:
+        type: string
+      total_cost:
+        type: number
+      user_id:
+        type: integer
+    type: object
+  entity.User:
+    properties:
+      deposit_amount:
+        type: number
+      email:
+        type: string
+      id:
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Log in with the provided email and password
+      operationId: login-user
+      parameters:
+      - description: User login request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/entity.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Login successful
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Invalid request data
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Invalid credentials
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Failed to generate token
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Login a user
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user with the provided email and password
+      operationId: register-user
+      parameters:
+      - description: User registration request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/entity.User'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: User registered successfully
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Invalid request data
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Failed to hash password" "Failed to register user" "Failed
+            to send registration email
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Register a new user
+  /rent:
+    post:
+      consumes:
+      - application/json
+      description: Rent an equipment based on rental date, return date, and equipment
+        ID
+      operationId: rent-equipment
+      parameters:
+      - description: JWT token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: Rental request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/entity.RentalHistory'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Equipment rented successfully
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Equipment is not available
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Failed to rent equipment" "Failed to update equipment availability
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Rent an equipment
+  /rental-histories:
+    get:
+      consumes:
+      - application/json
+      description: Get all rental histories for the authenticated user
+      operationId: get-all-rental-histories
+      parameters:
+      - description: JWT token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of rental histories
+          schema:
+            items:
+              $ref: '#/definitions/entity.RentalHistory'
+            type: array
+        "500":
+          description: Failed to fetch rental histories
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get all rental histories for a user
+  /rental-histories/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a rental history by its ID
+      operationId: delete-rental-history
+      parameters:
+      - description: JWT token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: Rental history ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Rental history deleted successfully
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Invalid ID
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Rental history not found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Failed to get rental history" "Failed to delete rental history"
+            "Failed to update equipment availability
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Delete a rental history by ID
+swagger: "2.0"
